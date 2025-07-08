@@ -22,7 +22,7 @@ export default function App() {
 
   //load dataset points from backend
   const fetchDataset = async(selectedDataset: string) => {
-    const res = await axios.post("http://localhost:5000/generate", {dataset: selectedDataset});
+    const res = await axios.post("https://k-means-backend.onrender.com/generate", {dataset: selectedDataset});
     setPoints(res.data.points);
     setFrames([]);
     setManualCentroids([]);
@@ -32,7 +32,7 @@ export default function App() {
   //run full kmeans with random init
   const runKMeans = async() => {
     setMode("random")
-    const res = await axios.post("http://localhost:5000/cluster",{
+    const res = await axios.post("https://k-means-backend.onrender.com/cluster",{
       k,
       dataset,
       init_method: "random",
@@ -52,7 +52,7 @@ export default function App() {
 
     //reassign points to nearest centroid
     const reassignPoints = async (): Promise<void> => {
-      const res = await axios.post("http://localhost:5000/reassign", {
+      const res = await axios.post("https://k-means-backend.onrender.com/reassign", {
         points,
         centroids: manualCentroids,
       });
@@ -73,7 +73,7 @@ export default function App() {
       const currentLabels = frames[frames.length - 1]?.labels;
       if(!currentLabels) return;
 
-      const res = await axios.post("http://localhost:5000/update", {
+      const res = await axios.post("https://k-means-backend.onrender.com/update", {
         points,
         labels: currentLabels,
         k,
